@@ -1,4 +1,4 @@
-# 🧠 Kaggle Competition Projects by ZeroZulu
+# 🧠 Kaggle Projects by ZeroZulu
 
 Welcome to my Kaggle portfolio. This repository contains my solutions to various Kaggle machine learning and data science challenges. Each directory represents a self-contained project, complete with notebooks, scripts, and documentation.
 
