@@ -6,7 +6,7 @@ Welcome to my Kaggle portfolio. This repository contains my solutions to various
 
 - [🏅 Olympic Sports, Medals, and Discipline Analysis](./HousePrices-Advanced-Regression-Techniques)
 - [🚢 Titanic Survival Prediction](./Human-Protein-Atlas-Single-Cell-Classification)
-- [🧾 place holder](./Santander-Customer-Transaction-Prediction)
+- [🎮 Top Twitch Streamers Analysis](./Santander-Customer-Transaction-Prediction)
 - [🌍 place holder](./VSB-Power-Line-Fault-Detection)
 - [📈 place holder](./TPS-Jan-2021)
 - [💳 Place Holder](./Give-Me-Some-Credit)
