@@ -4,7 +4,7 @@ Welcome to my Kaggle portfolio. This repository contains my solutions to various
 
 ## 📂 Project List
 
-- [🏠 place holder](./HousePrices-Advanced-Regression-Techniques)
+- [🏅 Olympic Sports, Medals, and Discipline Analysis](./HousePrices-Advanced-Regression-Techniques)
 - [🧬 place holder](./Human-Protein-Atlas-Single-Cell-Classification)
 - [🧾 place holder](./Santander-Customer-Transaction-Prediction)
 - [🌍 place holder](./VSB-Power-Line-Fault-Detection)
