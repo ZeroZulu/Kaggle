@@ -4,7 +4,7 @@ Welcome to my Kaggle portfolio. This repository contains my solutions to various
 
 ## 📂 Project List
 
-- [🏅 Olympic Sports, Medals, and Discipline Analysis](./HousePrices-Advanced-Regression-Techniques)
+- [🏅 Olympic Sports, Medals, and Discipline Analysis](./olympic-sports-medals-and-discipline)
 - [🚢 Titanic Survival Prediction](./Human-Protein-Atlas-Single-Cell-Classification)
 - [🎮 Top Twitch Streamers Analysis](./Santander-Customer-Transaction-Prediction)
 - [🎮 Video Game Sales Data Analysis](./VSB-Power-Line-Fault-Detection)
