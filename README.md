@@ -7,7 +7,7 @@ Welcome to my Kaggle portfolio. This repository contains my solutions to various
 - [🏅 Olympic Sports, Medals, and Discipline Analysis](./olympic-sports-medals-and-discipline)
 - [🚢 Titanic Survival Prediction](./titanic-survival-prediction)
 - [🎮 Top Twitch Streamers Analysis](./top-twitch-streamers)
-- [🎮 Video Game Sales Data Analysis](./VSB-Power-Line-Fault-Detection)
+- [🎮 Video Game Sales Data Analysis](./video-game-sales-data)
 - [📈 place holder](./TPS-Jan-2021)
 - [💳 Place Holder](./Give-Me-Some-Credit)
 
