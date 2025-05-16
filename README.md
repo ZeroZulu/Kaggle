@@ -8,7 +8,7 @@ Welcome to my Kaggle portfolio. This repository contains my solutions to various
 - [🚢 Titanic Survival Prediction](./titanic-survival-prediction)
 - [🎮 Top Twitch Streamers Analysis](./top-twitch-streamers)
 - [🎮 Video Game Sales Data Analysis](./video-game-sales-data)
-- [📈 place holder](./TPS-Jan-2021)
+- [📈 place holder](./telecom-churn)
 - [💳 Place Holder](./Give-Me-Some-Credit)
 
 _(More projects available in this repository. Click into each directory for notebooks and results.)_
