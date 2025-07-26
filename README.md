@@ -9,8 +9,8 @@ Welcome to my Kaggle portfolio. This repository contains my solutions to various
 - [🎮 Top Twitch Streamers Analysis](./top-twitch-streamers)
 - [🎮 Video Game Sales Data Analysis](./video-game-sales-data)
 - [📈 telecom-churn](./telecom-churn)
-- [🛍️ Walmart Sales Analysis](./Give-Me-Some-Credit)
-- [# 🎧 Beats & Bytes: Predictive Analytics for Spotify](./Give-Me-Some-Credit)
+- [🛍️ Walmart Sales Analysis](./walmart-by-the-numbers-what-the-data-really-says)
+- [🎧 Beats & Bytes: Predictive Analytics for Spotify](./beats-and-bytes-predictive-analytics-for-spotify)
 
 _(More projects available in this repository. Click into each directory for notebooks and results.)_
 
