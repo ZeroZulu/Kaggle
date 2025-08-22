@@ -30,7 +30,9 @@ A range of visualizations were created to support the analysis:
 - Sales distribution over time
 - Branch-level comparisons
 - Product line heatmaps
-- Customer and transaction volume charts
+- Customer and transaction volume charts  
+
+🔗 **Interactive Dashboard:** [View on Tableau Public](https://public.tableau.com/views/Walmart_Sales_Intelligence/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 
 ---
 
@@ -64,3 +66,4 @@ Based on the findings:
 - Promote high-performing product lines more aggressively.
 - Optimize inventory distribution across underperforming branches.
 - Consider gender-specific marketing strategies based on customer patterns.
+
