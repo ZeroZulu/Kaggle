@@ -3,7 +3,7 @@ Store Sales Time Series Forecasting - Streamlit Dashboard
 =========================================================
 Interactive dashboard showcasing demand forecasting for retail stores.
 
-Author: [Your Name]
+Author: [Shril Patel]
 GitHub: https://github.com/ZeroZulu/kaggle
 """
 
@@ -106,7 +106,7 @@ with st.sidebar:
     st.markdown("""
     - [GitHub Repository](https://github.com/ZeroZulu/kaggle)
     - [Kaggle Competition](https://www.kaggle.com/competitions/store-sales-time-series-forecasting)
-    - [LinkedIn](https://linkedin.com/in/yourprofile)
+    - [LinkedIn](https://linkedin.com/in/shril-patel-020504284/)
     """)
 
 # ============================================================
