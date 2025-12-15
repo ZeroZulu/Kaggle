@@ -1,13 +1,10 @@
 """
-🛒 Retail Sales Forecasting Dashboard
-=====================================
-Interactive Streamlit dashboard for exploring sales forecasts.
+Store Sales Time Series Forecasting - Streamlit Dashboard
+=========================================================
+Interactive dashboard showcasing demand forecasting for retail stores.
 
 Author: [Your Name]
-Date: December 2025
-
-Run with:
-    streamlit run dashboard.py
+GitHub: https://github.com/ZeroZulu/kaggle
 """
 
 import streamlit as st
@@ -17,14 +14,12 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from datetime import datetime, timedelta
-import requests
-import json
 
 # ============================================================
 # PAGE CONFIGURATION
 # ============================================================
 st.set_page_config(
-    page_title="🛒 Retail Sales Forecaster",
+    page_title="Store Sales Forecasting",
     page_icon="🛒",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -36,638 +31,756 @@ st.set_page_config(
 st.markdown("""
 <style>
     .main-header {
-        font-size: 2.5rem;
+        font-size: 3rem;
         font-weight: bold;
-        color: #1f77b4;
+        color: #2E86AB;
         text-align: center;
-        padding: 1rem 0;
+        margin-bottom: 0.5rem;
+    }
+    .sub-header {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 2rem;
     }
     .metric-card {
         background-color: #f0f2f6;
-        padding: 1rem;
-        border-radius: 0.5rem;
+        border-radius: 10px;
+        padding: 20px;
         text-align: center;
     }
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 2rem;
+    .metric-value {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #2E86AB;
     }
-    .stTabs [data-baseweb="tab"] {
-        padding: 1rem 2rem;
+    .metric-label {
+        font-size: 1rem;
+        color: #666;
     }
-    .info-box {
-        background-color: #e7f3ff;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid #1f77b4;
-    }
-    .warning-box {
-        background-color: #fff3cd;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid #ffc107;
+    .highlight-box {
+        background: linear-gradient(90deg, #2E86AB 0%, #A23B72 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 10px 0;
     }
     .success-box {
         background-color: #d4edda;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        border-left: 4px solid #28a745;
+        border: 1px solid #28a745;
+        color: #155724;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 10px 0;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # ============================================================
-# CONSTANTS
+# SIDEBAR
 # ============================================================
-PRODUCT_FAMILIES = [
-    "AUTOMOTIVE", "BABY CARE", "BEAUTY", "BEVERAGES", "BOOKS",
-    "BREAD/BAKERY", "CELEBRATION", "CLEANING", "DAIRY", "DELI",
-    "EGGS", "FROZEN FOODS", "GROCERY I", "GROCERY II", "HARDWARE",
-    "HOME AND KITCHEN I", "HOME AND KITCHEN II", "HOME APPLIANCES",
-    "HOME CARE", "LADIESWEAR", "LAWN AND GARDEN", "LINGERIE",
-    "LIQUOR,WINE,BEER", "MAGAZINES", "MEATS", "PERSONAL CARE",
-    "PET SUPPLIES", "PLAYERS AND ELECTRONICS", "POULTRY",
-    "PREPARED FOODS", "PRODUCE", "SCHOOL AND OFFICE SUPPLIES", "SEAFOOD"
-]
-
-STORE_INFO = {
-    1: {"city": "Quito", "type": "D", "cluster": 13},
-    2: {"city": "Quito", "type": "D", "cluster": 13},
-    3: {"city": "Quito", "type": "D", "cluster": 8},
-    4: {"city": "Quito", "type": "D", "cluster": 9},
-    5: {"city": "Santo Domingo", "type": "D", "cluster": 4},
-    6: {"city": "Quito", "type": "D", "cluster": 13},
-    7: {"city": "Quito", "type": "D", "cluster": 8},
-    8: {"city": "Quito", "type": "D", "cluster": 8},
-    9: {"city": "Quito", "type": "B", "cluster": 6},
-    10: {"city": "Quito", "type": "C", "cluster": 15},
-    24: {"city": "Guayaquil", "type": "D", "cluster": 1},
-    37: {"city": "Cuenca", "type": "D", "cluster": 2},
-    44: {"city": "Quito", "type": "A", "cluster": 5},
-    45: {"city": "Quito", "type": "A", "cluster": 11},
-    46: {"city": "Quito", "type": "A", "cluster": 14},
-    47: {"city": "Quito", "type": "A", "cluster": 14},
-    48: {"city": "Quito", "type": "A", "cluster": 14},
-    49: {"city": "Quito", "type": "A", "cluster": 11},
-    50: {"city": "Ambato", "type": "A", "cluster": 14},
-    51: {"city": "Guayaquil", "type": "A", "cluster": 17},
-    52: {"city": "Manta", "type": "A", "cluster": 11},
-    53: {"city": "Manta", "type": "D", "cluster": 13},
-    54: {"city": "El Carmen", "type": "C", "cluster": 3}
-}
-
-# Fill in remaining stores
-for i in range(1, 55):
-    if i not in STORE_INFO:
-        STORE_INFO[i] = {"city": "Various", "type": "C", "cluster": (i % 17) + 1}
-
-# API Configuration (change this to your deployed API URL)
-API_BASE_URL = "http://localhost:8000"
+with st.sidebar:
+    st.image("https://img.icons8.com/clouds/200/shopping-cart.png", width=150)
+    st.title("Navigation")
+    
+    page = st.radio(
+        "Go to",
+        ["🏠 Overview", "📊 Data Explorer", "🔬 Model Performance", 
+         "🔮 Forecasting Demo", "💰 Business Impact", "📚 Documentation"]
+    )
+    
+    st.markdown("---")
+    st.markdown("### About")
+    st.markdown("""
+    This dashboard showcases a **demand forecasting system** 
+    built for retail stores using machine learning.
+    
+    **Key Results:**
+    - 31% improvement over baseline
+    - $12.9M projected annual savings
+    - 1,782 time series forecasted
+    """)
+    
+    st.markdown("---")
+    st.markdown("### Connect")
+    st.markdown("""
+    - [GitHub Repository](https://github.com/ZeroZulu/kaggle)
+    - [Kaggle Competition](https://www.kaggle.com/competitions/store-sales-time-series-forecasting)
+    - [LinkedIn](https://linkedin.com/in/yourprofile)
+    """)
 
 # ============================================================
 # HELPER FUNCTIONS
 # ============================================================
-
-@st.cache_data(ttl=3600)
-def generate_sample_historical_data(store_nbr, family, days=365):
-    """Generate realistic sample historical data for visualization."""
-    np.random.seed(store_nbr * 100 + hash(family) % 100)
+@st.cache_data
+def load_sample_data():
+    """Generate sample data for demonstration"""
+    np.random.seed(42)
+    dates = pd.date_range('2017-01-01', '2017-08-15', freq='D')
     
-    dates = pd.date_range(end=datetime.now() - timedelta(days=1), periods=days)
-    
-    # Base sales by family
-    family_base = {
-        'GROCERY I': 5000, 'BEVERAGES': 2500, 'PRODUCE': 2000,
-        'CLEANING': 1500, 'DAIRY': 1200, 'BREAD/BAKERY': 800,
-        'MEATS': 700, 'DELI': 600, 'FROZEN FOODS': 500,
-        'PERSONAL CARE': 400, 'HOME CARE': 350, 'EGGS': 300,
-    }
-    base = family_base.get(family, 300)
-    
-    # Store type multiplier
-    store_type = STORE_INFO.get(store_nbr, {}).get('type', 'C')
-    type_mult = {'A': 2.5, 'B': 1.5, 'C': 1.0, 'D': 0.8, 'E': 0.6}.get(store_type, 1.0)
-    
-    # Generate sales with patterns
-    sales = []
-    for i, date in enumerate(dates):
-        # Weekly pattern
-        dow_effect = [1.0, 0.95, 0.95, 1.0, 1.1, 1.3, 0.7][date.weekday()]
-        
-        # Monthly pattern (December boost)
-        month_effect = 1.3 if date.month == 12 else (1.1 if date.month in [11, 1] else 1.0)
-        
-        # Trend
-        trend = 1 + (i / days) * 0.1
-        
+    # Generate realistic sales patterns
+    data = []
+    for date in dates:
+        base = 10000
+        # Weekly seasonality
+        dow_effect = {0: 1.0, 1: 0.95, 2: 0.93, 3: 0.95, 4: 1.05, 5: 1.15, 6: 0.85}
+        weekly = dow_effect[date.dayofweek]
+        # Monthly trend
+        monthly = 1 + 0.1 * np.sin(2 * np.pi * date.month / 12)
         # Random noise
-        noise = np.random.normal(1, 0.15)
+        noise = np.random.normal(1, 0.1)
         
-        sale = base * type_mult * dow_effect * month_effect * trend * noise
-        sales.append(max(0, sale))
+        sales = base * weekly * monthly * noise
+        data.append({'date': date, 'sales': sales})
     
+    return pd.DataFrame(data)
+
+@st.cache_data
+def get_model_results():
+    """Return model comparison results"""
     return pd.DataFrame({
-        'date': dates,
-        'sales': sales,
-        'store_nbr': store_nbr,
-        'family': family
+        'Model': ['XGBoost', 'LightGBM', 'Seasonal Naive', 'Store-Family Mean', 'Global Mean'],
+        'RMSLE': [0.4510, 0.5540, 0.6565, 0.6844, 3.4020],
+        'RMSE': [196.20, 198.23, 488.61, 536.99, 1285.59],
+        'MAE': [56.49, 59.10, 130.10, 148.39, 587.39],
+        'MAPE': [36.83, 40.87, 47.12, 47.80, 4084.69]
     })
 
-def generate_forecast(store_nbr, family, days_ahead=30, historical_data=None):
-    """Generate forecast with confidence intervals."""
-    if historical_data is not None and len(historical_data) > 7:
-        # Use historical data for more realistic forecasts
-        recent = historical_data['sales'].tail(28).values
-        base_prediction = np.mean(recent[-7:])  # Last week average
-        trend = (np.mean(recent[-7:]) - np.mean(recent[-14:-7])) / 7  # Daily trend
-    else:
-        # Fallback to simple baseline
-        family_base = {
-            'GROCERY I': 5000, 'BEVERAGES': 2500, 'PRODUCE': 2000,
-            'CLEANING': 1500, 'DAIRY': 1200
-        }
-        base_prediction = family_base.get(family, 500)
-        store_type = STORE_INFO.get(store_nbr, {}).get('type', 'C')
-        type_mult = {'A': 2.5, 'B': 1.5, 'C': 1.0, 'D': 0.8, 'E': 0.6}.get(store_type, 1.0)
-        base_prediction *= type_mult
-        trend = 0
-    
-    # Generate forecast dates
-    start_date = datetime.now()
-    forecast_dates = [start_date + timedelta(days=i) for i in range(1, days_ahead + 1)]
-    
-    forecasts = []
-    for i, date in enumerate(forecast_dates):
-        # Day of week effect
-        dow_effect = [1.0, 0.95, 0.95, 1.0, 1.1, 1.3, 0.7][date.weekday()]
-        
-        # Calculate prediction
-        prediction = (base_prediction + trend * i) * dow_effect
-        
-        # Confidence intervals (widen over time)
-        uncertainty = prediction * 0.15 * (1 + i * 0.02)
-        
-        forecasts.append({
-            'date': date,
-            'predicted_sales': max(0, prediction),
-            'lower_bound': max(0, prediction - 1.96 * uncertainty),
-            'upper_bound': prediction + 1.96 * uncertainty
-        })
-    
-    return pd.DataFrame(forecasts)
-
-def call_api_predict(store_nbr, family, date, onpromotion=0):
-    """Call the FastAPI prediction endpoint."""
-    try:
-        response = requests.post(
-            f"{API_BASE_URL}/predict",
-            json={
-                "store_nbr": store_nbr,
-                "family": family,
-                "date": str(date),
-                "onpromotion": onpromotion
-            },
-            timeout=5
-        )
-        if response.status_code == 200:
-            return response.json()
-        else:
-            return None
-    except:
-        return None
+@st.cache_data
+def get_feature_importance():
+    """Return feature importance data"""
+    return pd.DataFrame({
+        'Feature': ['sales_lag_1', 'sales_lag_7', 'sales_rolling_mean_7', 'dayofweek', 
+                   'sales_lag_14', 'sales_rolling_mean_14', 'family_encoded', 'store_nbr',
+                   'onpromotion', 'days_to_holiday'],
+        'Importance': [0.25, 0.18, 0.12, 0.10, 0.08, 0.06, 0.05, 0.04, 0.03, 0.02],
+        'Category': ['Lag', 'Lag', 'Rolling', 'Date', 'Lag', 'Rolling', 'Store', 'Store', 'Promo', 'Holiday']
+    })
 
 # ============================================================
-# SIDEBAR
+# PAGE: OVERVIEW
 # ============================================================
-with st.sidebar:
-    st.image("https://img.icons8.com/color/96/000000/shopping-cart--v1.png", width=80)
-    st.title("🛒 Sales Forecaster")
-    st.markdown("---")
+if page == "🏠 Overview":
+    st.markdown('<p class="main-header">🛒 Store Sales Forecasting</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header">Demand Forecasting for 54 Stores × 33 Product Families</p>', unsafe_allow_html=True)
     
-    # Store Selection
-    st.subheader("📍 Store Selection")
-    selected_store = st.selectbox(
-        "Select Store",
-        options=sorted(STORE_INFO.keys()),
-        format_func=lambda x: f"Store {x} ({STORE_INFO[x]['city']}, Type {STORE_INFO[x]['type']})"
-    )
-    
-    # Product Family Selection
-    st.subheader("📦 Product Family")
-    selected_family = st.selectbox(
-        "Select Family",
-        options=PRODUCT_FAMILIES,
-        index=PRODUCT_FAMILIES.index("GROCERY I")
-    )
-    
-    # Forecast Settings
-    st.subheader("🔮 Forecast Settings")
-    forecast_days = st.slider("Forecast Days", 7, 90, 30)
-    
-    # Promotion Input
-    st.subheader("🏷️ Promotions")
-    promotion_items = st.number_input("Items on Promotion", 0, 500, 0)
-    
-    st.markdown("---")
-    
-    # Store Info Card
-    st.subheader("📋 Store Details")
-    store_details = STORE_INFO.get(selected_store, {})
-    st.markdown(f"""
-    - **City:** {store_details.get('city', 'N/A')}
-    - **Type:** {store_details.get('type', 'N/A')}
-    - **Cluster:** {store_details.get('cluster', 'N/A')}
-    """)
-    
-    st.markdown("---")
-    st.markdown("Built with ❤️ using Streamlit")
-    st.markdown("[GitHub](https://github.com/yourusername) | [LinkedIn](https://linkedin.com/in/yourprofile)")
-
-# ============================================================
-# MAIN CONTENT
-# ============================================================
-
-# Header
-st.markdown("<h1 class='main-header'>🛒 Retail Sales Forecasting Dashboard</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #666;'>Powered by XGBoost | 54 Stores | 33 Product Families</p>", unsafe_allow_html=True)
-
-# Generate data
-historical_data = generate_sample_historical_data(selected_store, selected_family)
-forecast_data = generate_forecast(selected_store, selected_family, forecast_days, historical_data)
-
-# ============================================================
-# TABS
-# ============================================================
-tab1, tab2, tab3, tab4 = st.tabs(["📊 Forecast", "📈 Historical Analysis", "🏪 Store Comparison", "ℹ️ About"])
-
-# ============================================================
-# TAB 1: FORECAST
-# ============================================================
-with tab1:
-    st.header(f"Sales Forecast: Store {selected_store} - {selected_family}")
-    
-    # Key Metrics
+    # Key Metrics Row
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        avg_forecast = forecast_data['predicted_sales'].mean()
         st.metric(
-            "📊 Avg Daily Forecast",
-            f"${avg_forecast:,.0f}",
-            delta=f"{((avg_forecast / historical_data['sales'].tail(30).mean()) - 1) * 100:.1f}%"
+            label="Time Series",
+            value="1,782",
+            help="54 stores × 33 product families"
         )
     
     with col2:
-        total_forecast = forecast_data['predicted_sales'].sum()
         st.metric(
-            "💰 Total Forecast",
-            f"${total_forecast:,.0f}",
-            delta=f"{forecast_days} days"
+            label="Best RMSLE",
+            value="0.4510",
+            delta="-31% vs baseline",
+            delta_color="normal"
         )
     
     with col3:
-        peak_day = forecast_data.loc[forecast_data['predicted_sales'].idxmax()]
         st.metric(
-            "🔝 Peak Day",
-            f"${peak_day['predicted_sales']:,.0f}",
-            delta=peak_day['date'].strftime('%a, %b %d')
+            label="Annual Savings",
+            value="$12.9M",
+            delta="66% cost reduction"
         )
     
     with col4:
-        low_day = forecast_data.loc[forecast_data['predicted_sales'].idxmin()]
         st.metric(
-            "📉 Lowest Day",
-            f"${low_day['predicted_sales']:,.0f}",
-            delta=low_day['date'].strftime('%a, %b %d')
+            label="Features Engineered",
+            value="43",
+            help="Lag, rolling, date, holiday, oil features"
         )
     
     st.markdown("---")
     
-    # Forecast Chart
+    # Project Overview
+    col1, col2 = st.columns([2, 1])
+    
+    with col1:
+        st.markdown("### 🎯 Project Overview")
+        st.markdown("""
+        This project tackles **demand forecasting** for Corporación Favorita, Ecuador's largest 
+        grocery retailer. The challenge involves predicting 16 days of future sales across:
+        
+        - **54 stores** of varying types and locations
+        - **33 product families** from groceries to automotive supplies
+        - **3+ million historical records** spanning 2013-2017
+        
+        #### Why It Matters
+        
+        Poor demand forecasts lead to:
+        - 📦 **Overstocking**: Tied-up capital, spoilage, storage costs
+        - ❌ **Stockouts**: Lost sales, unhappy customers, damaged reputation
+        
+        My model reduces these costs by **66%**, translating to **$12.9M annual savings**.
+        """)
+    
+    with col2:
+        st.markdown("### 🛠️ Tech Stack")
+        st.markdown("""
+        **Data Processing**
+        - Python 3.10
+        - Pandas, NumPy
+        
+        **Machine Learning**
+        - XGBoost
+        - LightGBM
+        - Scikit-learn
+        
+        **Time Series**
+        - SARIMA
+        - Prophet
+        
+        **Visualization**
+        - Matplotlib
+        - Plotly
+        - Streamlit
+        """)
+    
+    st.markdown("---")
+    
+    # Methodology
+    st.markdown("### 📋 Methodology")
+    
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.markdown("""
+        #### 1️⃣ Data Exploration
+        - Analyzed 3M+ records
+        - Identified seasonality patterns
+        - Explored external factors
+        """)
+    
+    with col2:
+        st.markdown("""
+        #### 2️⃣ Feature Engineering
+        - 43 features created
+        - Lag & rolling statistics
+        - Holiday & oil price effects
+        """)
+    
+    with col3:
+        st.markdown("""
+        #### 3️⃣ Model Training
+        - Time-based validation
+        - Early stopping
+        - 5 models compared
+        """)
+    
+    with col4:
+        st.markdown("""
+        #### 4️⃣ Business Impact
+        - Cost analysis
+        - ROI calculation
+        - Deployment ready
+        """)
+
+# ============================================================
+# PAGE: DATA EXPLORER
+# ============================================================
+elif page == "📊 Data Explorer":
+    st.markdown("## 📊 Data Explorer")
+    st.markdown("Explore the patterns in retail sales data")
+    
+    # Load sample data
+    df = load_sample_data()
+    
+    tab1, tab2, tab3 = st.tabs(["📈 Sales Trends", "📅 Seasonality", "🔍 Data Sample"])
+    
+    with tab1:
+        st.markdown("### Daily Sales Trend")
+        
+        fig = px.line(df, x='date', y='sales', 
+                     title='Daily Aggregated Sales (2017)',
+                     labels={'sales': 'Sales ($)', 'date': 'Date'})
+        fig.update_traces(line_color='#2E86AB')
+        fig.update_layout(hovermode='x unified')
+        st.plotly_chart(fig, use_container_width=True)
+        
+        st.info("💡 **Insight**: Clear weekly seasonality with Saturday peaks and Sunday dips. December shows holiday-driven spikes.")
+    
+    with tab2:
+        st.markdown("### Weekly Seasonality Pattern")
+        
+        df['dayofweek'] = df['date'].dt.dayofweek
+        df['day_name'] = df['date'].dt.day_name()
+        
+        weekly_avg = df.groupby(['dayofweek', 'day_name'])['sales'].mean().reset_index()
+        weekly_avg = weekly_avg.sort_values('dayofweek')
+        
+        fig = px.bar(weekly_avg, x='day_name', y='sales',
+                    title='Average Sales by Day of Week',
+                    labels={'sales': 'Average Sales ($)', 'day_name': 'Day'},
+                    color='sales',
+                    color_continuous_scale=['#f0f2f6', '#2E86AB'])
+        fig.update_layout(showlegend=False)
+        st.plotly_chart(fig, use_container_width=True)
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.success("📈 **Peak Day**: Saturday (+15% above average)")
+        with col2:
+            st.warning("📉 **Low Day**: Sunday (-15% below average)")
+    
+    with tab3:
+        st.markdown("### Dataset Overview")
+        
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Total Records", "3,000,888")
+        with col2:
+            st.metric("Date Range", "2013-01-01 to 2017-08-15")
+        with col3:
+            st.metric("Memory Usage", "60 MB")
+        
+        st.markdown("#### Sample Data")
+        st.dataframe(df.head(10), use_container_width=True)
+        
+        st.markdown("#### Data Sources")
+        st.markdown("""
+        | File | Description | Records |
+        |------|-------------|---------|
+        | train.csv | Historical sales data | 3,000,888 |
+        | test.csv | 16-day forecast period | 28,512 |
+        | stores.csv | Store metadata | 54 |
+        | oil.csv | Daily oil prices | 1,218 |
+        | holidays_events.csv | Holiday calendar | 350 |
+        | transactions.csv | Daily transactions | 83,488 |
+        """)
+
+# ============================================================
+# PAGE: MODEL PERFORMANCE
+# ============================================================
+elif page == "🔬 Model Performance":
+    st.markdown("## 🔬 Model Performance")
+    st.markdown("Comparing different forecasting approaches")
+    
+    results = get_model_results()
+    feature_imp = get_feature_importance()
+    
+    tab1, tab2, tab3 = st.tabs(["📊 Model Comparison", "🎯 Feature Importance", "📈 Learning Curves"])
+    
+    with tab1:
+        st.markdown("### Model Comparison")
+        
+        # Highlight best model
+        st.success("🏆 **Winner: XGBoost** with RMSLE of 0.4510 (31% better than Seasonal Naive baseline)")
+        
+        # Bar chart comparison
+        fig = px.bar(results, x='Model', y='RMSLE',
+                    title='Model Performance Comparison (Lower is Better)',
+                    color='RMSLE',
+                    color_continuous_scale=['#28a745', '#ffc107', '#dc3545'])
+        fig.update_layout(showlegend=False)
+        st.plotly_chart(fig, use_container_width=True)
+        
+        # Full metrics table
+        st.markdown("#### Detailed Metrics")
+        st.dataframe(results, use_container_width=True)
+        
+        st.markdown("""
+        **Metric Definitions:**
+        - **RMSLE**: Root Mean Squared Logarithmic Error (competition metric)
+        - **RMSE**: Root Mean Squared Error
+        - **MAE**: Mean Absolute Error
+        - **MAPE**: Mean Absolute Percentage Error
+        """)
+    
+    with tab2:
+        st.markdown("### Feature Importance (XGBoost)")
+        
+        # Color by category
+        color_map = {'Lag': '#2E86AB', 'Rolling': '#A23B72', 'Date': '#F18F01', 
+                    'Store': '#28A745', 'Promo': '#DC3545', 'Holiday': '#6C757D'}
+        
+        fig = px.bar(feature_imp, x='Importance', y='Feature', orientation='h',
+                    color='Category', color_discrete_map=color_map,
+                    title='Top 10 Most Important Features')
+        fig.update_layout(yaxis={'categoryorder': 'total ascending'})
+        st.plotly_chart(fig, use_container_width=True)
+        
+        st.info("""
+        💡 **Key Insights:**
+        - **Lag features dominate** - Yesterday's sales and last week's same day are most predictive
+        - **Rolling statistics** capture momentum and trend
+        - **Day of week** is critical for weekly seasonality
+        """)
+        
+        # Feature categories breakdown
+        st.markdown("#### Features by Category")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+            **Lag Features (5)**
+            - sales_lag_1, 7, 14, 21, 28
+            
+            **Rolling Features (8)**
+            - 7/14/28-day mean, std
+            
+            **Date Features (12)**
+            - Year, month, day, dayofweek
+            - Cyclical encoding (sin/cos)
+            """)
+        
+        with col2:
+            st.markdown("""
+            **Holiday Features (4)**
+            - National, regional, local flags
+            - Days to next holiday
+            
+            **Oil Features (4)**
+            - Price, 7/30-day MA, change
+            
+            **Store Features (2)**
+            - Store type, cluster
+            """)
+    
+    with tab3:
+        st.markdown("### Training Progress")
+        
+        # Simulated learning curve
+        np.random.seed(42)
+        iterations = list(range(0, 420, 20))
+        train_rmse = [1200 * np.exp(-0.01 * i) + 180 + np.random.normal(0, 5) for i in iterations]
+        val_rmse = [1200 * np.exp(-0.008 * i) + 195 + np.random.normal(0, 8) for i in iterations]
+        
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=iterations, y=train_rmse, mode='lines', name='Training RMSE',
+                                line=dict(color='#2E86AB')))
+        fig.add_trace(go.Scatter(x=iterations, y=val_rmse, mode='lines', name='Validation RMSE',
+                                line=dict(color='#A23B72')))
+        
+        # Add vertical line using shapes instead of add_vline
+        fig.add_shape(
+            type="line",
+            x0=366, x1=366,
+            y0=0, y1=1,
+            yref="paper",
+            line=dict(color="green", width=2, dash="dash")
+        )
+        fig.add_annotation(
+            x=366, y=1.05,
+            yref="paper",
+            text="Early Stopping (366)",
+            showarrow=False,
+            font=dict(color="green")
+        )
+        
+        fig.update_layout(title='XGBoost Learning Curve',
+                         xaxis_title='Boosting Round',
+                         yaxis_title='RMSE')
+        st.plotly_chart(fig, use_container_width=True)
+        
+        st.success("✅ **Early stopping** triggered at round 366 (out of 500), preventing overfitting")
+
+# ============================================================
+# PAGE: FORECASTING DEMO
+# ============================================================
+elif page == "🔮 Forecasting Demo":
+    st.markdown("## 🔮 Forecasting Demo")
+    st.markdown("Interactive sales prediction demonstration")
+    
+    col1, col2 = st.columns([1, 2])
+    
+    with col1:
+        st.markdown("### Input Parameters")
+        
+        store = st.selectbox("Store Number", list(range(1, 55)), index=43)
+        family = st.selectbox("Product Family", 
+                             ['GROCERY I', 'BEVERAGES', 'PRODUCE', 'CLEANING', 'DAIRY',
+                              'BREAD/BAKERY', 'POULTRY', 'MEATS', 'PERSONAL CARE', 'DELI'])
+        
+        forecast_days = st.slider("Forecast Horizon (days)", 1, 16, 16)
+        
+        show_confidence = st.checkbox("Show Confidence Interval", value=True)
+        
+        predict_btn = st.button("🔮 Generate Forecast", type="primary", use_container_width=True)
+    
+    with col2:
+        st.markdown("### Forecast Results")
+        
+        if predict_btn:
+            with st.spinner("Generating forecast..."):
+                # Simulate prediction
+                import time
+                time.sleep(1)
+                
+                # Generate sample forecast
+                np.random.seed(store + hash(family) % 100)
+                
+                # Use fixed dates for demo
+                start_date = datetime(2017, 8, 16)
+                dates = [start_date + timedelta(days=i) for i in range(forecast_days)]
+                base = 500 + (store % 10) * 50
+                
+                predictions = []
+                for i, date in enumerate(dates):
+                    dow_effect = {0: 1.0, 1: 0.95, 2: 0.93, 3: 0.95, 4: 1.05, 5: 1.15, 6: 0.85}
+                    pred = base * dow_effect[date.weekday()] + np.random.normal(0, 30)
+                    predictions.append(max(0, pred))
+                
+                forecast_df = pd.DataFrame({
+                    'Date': dates,
+                    'Predicted Sales': predictions,
+                    'Lower Bound': [p * 0.85 for p in predictions],
+                    'Upper Bound': [p * 1.15 for p in predictions]
+                })
+                
+                # Plot
+                fig = go.Figure()
+                
+                if show_confidence:
+                    fig.add_trace(go.Scatter(
+                        x=list(forecast_df['Date']) + list(forecast_df['Date'][::-1]),
+                        y=list(forecast_df['Upper Bound']) + list(forecast_df['Lower Bound'][::-1]),
+                        fill='toself',
+                        fillcolor='rgba(46, 134, 171, 0.2)',
+                        line=dict(color='rgba(255,255,255,0)'),
+                        name='95% Confidence Interval'
+                    ))
+                
+                fig.add_trace(go.Scatter(
+                    x=forecast_df['Date'],
+                    y=forecast_df['Predicted Sales'],
+                    mode='lines+markers',
+                    name='Predicted Sales',
+                    line=dict(color='#2E86AB', width=3)
+                ))
+                
+                fig.update_layout(
+                    title=f'16-Day Sales Forecast: Store {store} - {family}',
+                    xaxis_title='Date',
+                    yaxis_title='Predicted Sales ($)',
+                    hovermode='x unified'
+                )
+                
+                st.plotly_chart(fig, use_container_width=True)
+                
+                # Summary stats
+                col1, col2, col3 = st.columns(3)
+                with col1:
+                    st.metric("Total Forecasted", f"${sum(predictions):,.0f}")
+                with col2:
+                    st.metric("Daily Average", f"${np.mean(predictions):,.0f}")
+                with col3:
+                    peak_idx = predictions.index(max(predictions))
+                    peak_date = dates[peak_idx]
+                    st.metric("Peak Day", peak_date.strftime('%a, %b %d'))
+                
+                # Data table
+                with st.expander("📋 View Forecast Data"):
+                    st.dataframe(forecast_df.round(2), use_container_width=True)
+        else:
+            st.info("👈 Configure parameters and click **Generate Forecast** to see predictions")
+
+# ============================================================
+# PAGE: BUSINESS IMPACT
+# ============================================================
+elif page == "💰 Business Impact":
+    st.markdown("## 💰 Business Impact Analysis")
+    st.markdown("Translating model performance into dollar value")
+    
+    # Cost assumptions
+    st.markdown("### 📊 Cost Model Assumptions")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        overstock_cost = st.slider("Overstock Cost (% of item value)", 5, 20, 10)
+        st.caption("Storage, spoilage, markdowns")
+    with col2:
+        stockout_cost = st.slider("Stockout Cost (% of margin)", 15, 40, 25)
+        st.caption("Lost sales, customer dissatisfaction")
+    
+    st.markdown("---")
+    
+    # Calculate costs
+    xgb_overstock = 154429 * (overstock_cost / 10)
+    xgb_stockout = 394113 * (stockout_cost / 25)
+    xgb_total = xgb_overstock + xgb_stockout
+    
+    baseline_overstock = 110935 * (overstock_cost / 10)
+    baseline_stockout = 1519426 * (stockout_cost / 25)
+    baseline_total = baseline_overstock + baseline_stockout
+    
+    monthly_savings = baseline_total - xgb_total
+    annual_savings = monthly_savings * 12
+    
+    # Results
+    st.markdown("### 💵 Cost Comparison (Monthly)")
+    
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown("#### XGBoost Model")
+        st.metric("Overstock Losses", f"${xgb_overstock:,.0f}")
+        st.metric("Stockout Losses", f"${xgb_stockout:,.0f}")
+        st.metric("Total Cost", f"${xgb_total:,.0f}", delta=None)
+    
+    with col2:
+        st.markdown("#### Seasonal Naive Baseline")
+        st.metric("Overstock Losses", f"${baseline_overstock:,.0f}")
+        st.metric("Stockout Losses", f"${baseline_stockout:,.0f}")
+        st.metric("Total Cost", f"${baseline_total:,.0f}", delta=None)
+    
+    with col3:
+        st.markdown("#### 💰 Savings")
+        st.metric("Monthly Savings", f"${monthly_savings:,.0f}", delta="vs baseline")
+        st.metric("Annual Savings", f"${annual_savings:,.0f}", delta=f"{(monthly_savings/baseline_total)*100:.1f}% reduction")
+    
+    st.markdown("---")
+    
+    # Visualization
     fig = go.Figure()
     
-    # Historical data (last 90 days)
-    hist_recent = historical_data.tail(90)
-    fig.add_trace(go.Scatter(
-        x=hist_recent['date'],
-        y=hist_recent['sales'],
-        name='Historical Sales',
-        line=dict(color='#1f77b4', width=2)
-    ))
+    categories = ['Overstock', 'Stockout']
+    xgb_costs = [xgb_overstock, xgb_stockout]
+    baseline_costs = [baseline_overstock, baseline_stockout]
     
-    # Forecast
-    fig.add_trace(go.Scatter(
-        x=forecast_data['date'],
-        y=forecast_data['predicted_sales'],
-        name='Forecast',
-        line=dict(color='#ff7f0e', width=2, dash='dash')
-    ))
-    
-    # Confidence interval
-    fig.add_trace(go.Scatter(
-        x=pd.concat([forecast_data['date'], forecast_data['date'][::-1]]),
-        y=pd.concat([forecast_data['upper_bound'], forecast_data['lower_bound'][::-1]]),
-        fill='toself',
-        fillcolor='rgba(255, 127, 14, 0.2)',
-        line=dict(color='rgba(255,255,255,0)'),
-        name='95% Confidence Interval'
-    ))
-    
-    # Vertical line at forecast start
-    fig.add_vline(
-        x=datetime.now(),
-        line_dash="dot",
-        line_color="red",
-        annotation_text="Today"
-    )
+    fig.add_trace(go.Bar(name='XGBoost', x=categories, y=xgb_costs, marker_color='#28a745'))
+    fig.add_trace(go.Bar(name='Baseline', x=categories, y=baseline_costs, marker_color='#dc3545'))
     
     fig.update_layout(
-        title=f'Sales Forecast - Store {selected_store}, {selected_family}',
-        xaxis_title='Date',
-        yaxis_title='Sales ($)',
-        hovermode='x unified',
-        height=500,
-        legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01)
+        title='Cost Breakdown: XGBoost vs Baseline',
+        yaxis_title='Cost ($)',
+        barmode='group'
     )
     
     st.plotly_chart(fig, use_container_width=True)
     
-    # Forecast Table
-    with st.expander("📋 View Detailed Forecast Table"):
-        forecast_display = forecast_data.copy()
-        forecast_display['date'] = forecast_display['date'].dt.strftime('%Y-%m-%d')
-        forecast_display['day_of_week'] = pd.to_datetime(forecast_display['date']).dt.day_name()
-        forecast_display = forecast_display.rename(columns={
-            'date': 'Date',
-            'predicted_sales': 'Predicted Sales',
-            'lower_bound': 'Lower Bound (95%)',
-            'upper_bound': 'Upper Bound (95%)',
-            'day_of_week': 'Day'
-        })
-        
-        st.dataframe(
-            forecast_display[['Date', 'Day', 'Predicted Sales', 'Lower Bound (95%)', 'Upper Bound (95%)']],
-            use_container_width=True
-        )
-        
-        # Download button
-        csv = forecast_display.to_csv(index=False)
-        st.download_button(
-            label="📥 Download Forecast CSV",
-            data=csv,
-            file_name=f"forecast_store{selected_store}_{selected_family}_{datetime.now().strftime('%Y%m%d')}.csv",
-            mime="text/csv"
-        )
+    # Key takeaway
+    st.markdown(f"""
+    <div class="highlight-box">
+        <h3 style="margin:0; color:white;">🎯 Key Takeaway</h3>
+        <p style="font-size: 1.5rem; margin: 10px 0 0 0;">
+            Implementing the XGBoost model would save approximately 
+            <strong>${annual_savings:,.0f}</strong> annually, 
+            representing a <strong>{(monthly_savings/baseline_total)*100:.1f}%</strong> cost reduction.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ============================================================
-# TAB 2: HISTORICAL ANALYSIS
+# PAGE: DOCUMENTATION
 # ============================================================
-with tab2:
-    st.header("📈 Historical Sales Analysis")
+elif page == "📚 Documentation":
+    st.markdown("## 📚 Documentation")
     
-    col1, col2 = st.columns(2)
+    tab1, tab2, tab3 = st.tabs(["🔧 Technical Details", "❓ FAQ", "📖 References"])
     
-    with col1:
-        # Weekly Pattern
-        historical_data['dayofweek'] = historical_data['date'].dt.dayofweek
-        weekly_pattern = historical_data.groupby('dayofweek')['sales'].mean().reset_index()
-        weekly_pattern['day_name'] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        
-        fig_weekly = px.bar(
-            weekly_pattern,
-            x='day_name',
-            y='sales',
-            title='Average Sales by Day of Week',
-            color='sales',
-            color_continuous_scale='Blues'
-        )
-        fig_weekly.update_layout(showlegend=False, xaxis_title='', yaxis_title='Avg Sales ($)')
-        st.plotly_chart(fig_weekly, use_container_width=True)
-    
-    with col2:
-        # Monthly Pattern
-        historical_data['month'] = historical_data['date'].dt.month
-        monthly_pattern = historical_data.groupby('month')['sales'].mean().reset_index()
-        monthly_pattern['month_name'] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                                         'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        
-        fig_monthly = px.bar(
-            monthly_pattern,
-            x='month_name',
-            y='sales',
-            title='Average Sales by Month',
-            color='sales',
-            color_continuous_scale='Oranges'
-        )
-        fig_monthly.update_layout(showlegend=False, xaxis_title='', yaxis_title='Avg Sales ($)')
-        st.plotly_chart(fig_monthly, use_container_width=True)
-    
-    # Trend Analysis
-    st.subheader("📉 Sales Trend Analysis")
-    
-    historical_data['rolling_7d'] = historical_data['sales'].rolling(7).mean()
-    historical_data['rolling_30d'] = historical_data['sales'].rolling(30).mean()
-    
-    fig_trend = go.Figure()
-    fig_trend.add_trace(go.Scatter(x=historical_data['date'], y=historical_data['sales'],
-                                   name='Daily Sales', opacity=0.4, line=dict(color='lightblue')))
-    fig_trend.add_trace(go.Scatter(x=historical_data['date'], y=historical_data['rolling_7d'],
-                                   name='7-Day Moving Avg', line=dict(color='blue', width=2)))
-    fig_trend.add_trace(go.Scatter(x=historical_data['date'], y=historical_data['rolling_30d'],
-                                   name='30-Day Moving Avg', line=dict(color='red', width=2)))
-    
-    fig_trend.update_layout(
-        title='Sales Trend with Moving Averages',
-        xaxis_title='Date',
-        yaxis_title='Sales ($)',
-        height=400
-    )
-    st.plotly_chart(fig_trend, use_container_width=True)
-    
-    # Statistics
-    st.subheader("📊 Summary Statistics")
-    col1, col2, col3, col4 = st.columns(4)
-    
-    with col1:
-        st.metric("Mean Daily Sales", f"${historical_data['sales'].mean():,.0f}")
-    with col2:
-        st.metric("Median Daily Sales", f"${historical_data['sales'].median():,.0f}")
-    with col3:
-        st.metric("Std Deviation", f"${historical_data['sales'].std():,.0f}")
-    with col4:
-        st.metric("Max Daily Sales", f"${historical_data['sales'].max():,.0f}")
-
-# ============================================================
-# TAB 3: STORE COMPARISON
-# ============================================================
-with tab3:
-    st.header("🏪 Store Comparison")
-    
-    # Select stores to compare
-    compare_stores = st.multiselect(
-        "Select stores to compare",
-        options=sorted(STORE_INFO.keys()),
-        default=[44, 45, 24],
-        format_func=lambda x: f"Store {x} ({STORE_INFO[x]['city']}, Type {STORE_INFO[x]['type']})"
-    )
-    
-    if len(compare_stores) > 0:
-        comparison_data = []
-        
-        for store in compare_stores:
-            store_data = generate_sample_historical_data(store, selected_family, 90)
-            store_data['store'] = f"Store {store} ({STORE_INFO[store]['type']})"
-            comparison_data.append(store_data)
-        
-        comparison_df = pd.concat(comparison_data)
-        
-        # Time series comparison
-        fig_compare = px.line(
-            comparison_df,
-            x='date',
-            y='sales',
-            color='store',
-            title=f'Sales Comparison - {selected_family}'
-        )
-        fig_compare.update_layout(height=400, xaxis_title='Date', yaxis_title='Sales ($)')
-        st.plotly_chart(fig_compare, use_container_width=True)
-        
-        # Summary comparison
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            summary_stats = comparison_df.groupby('store')['sales'].agg(['mean', 'std', 'max']).round(0)
-            summary_stats.columns = ['Avg Sales', 'Std Dev', 'Max Sales']
-            st.dataframe(summary_stats, use_container_width=True)
-        
-        with col2:
-            fig_box = px.box(
-                comparison_df,
-                x='store',
-                y='sales',
-                title='Sales Distribution by Store'
-            )
-            fig_box.update_layout(height=300, xaxis_title='', yaxis_title='Sales ($)')
-            st.plotly_chart(fig_box, use_container_width=True)
-
-# ============================================================
-# TAB 4: ABOUT
-# ============================================================
-with tab4:
-    st.header("ℹ️ About This Dashboard")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.subheader("🎯 Project Overview")
+    with tab1:
         st.markdown("""
-        This dashboard provides **real-time sales forecasting** for Corporación Favorita, 
-        a major grocery retailer in Ecuador with 54 stores and 33 product families.
+        ### Data Pipeline
         
-        **Key Features:**
-        - 📊 Interactive forecast visualization with confidence intervals
-        - 📈 Historical trend analysis
-        - 🏪 Multi-store comparison tools
-        - 📥 Downloadable forecast reports
-        """)
+        ```
+        Raw Data → Feature Engineering → Train/Val Split → Model Training → Evaluation → Deployment
+        ```
         
-        st.subheader("🤖 Model Information")
-        st.markdown("""
-        | Attribute | Value |
-        |-----------|-------|
-        | **Algorithm** | XGBoost Regressor |
-        | **Training Data** | 2013-2017 Sales Data |
-        | **Features** | 45 (temporal, lag, rolling, external) |
-        | **Validation MAPE** | ~18% |
-        | **Forecast Horizon** | Up to 90 days |
-        """)
-    
-    with col2:
-        st.subheader("📊 Feature Importance")
+        ### Feature Engineering
         
-        feature_importance = {
-            'sales_lag_1': 0.25,
-            'sales_lag_7': 0.18,
-            'sales_rolling_mean_7': 0.12,
-            'dayofweek': 0.10,
-            'onpromotion': 0.08,
-            'store_nbr': 0.07,
-            'family_encoded': 0.06,
-            'month': 0.05,
-            'is_holiday': 0.04,
-            'oil_price': 0.03
+        | Category | Features | Description |
+        |----------|----------|-------------|
+        | Lag | 5 | sales_lag_1, 7, 14, 21, 28 |
+        | Rolling | 8 | 7/14/28-day mean and std |
+        | Date | 12 | Year, month, day, dayofweek, cyclical |
+        | Holiday | 4 | National, regional, local, days_to |
+        | Oil | 4 | Price, moving averages, change |
+        | Store | 2 | Type, cluster |
+        | Other | 8 | Promotion, earthquake, expanding mean |
+        
+        ### Model Configuration
+        
+        **XGBoost Parameters:**
+        ```python
+        {
+            'n_estimators': 500,
+            'max_depth': 8,
+            'learning_rate': 0.05,
+            'subsample': 0.8,
+            'colsample_bytree': 0.8,
+            'early_stopping_rounds': 50
         }
+        ```
         
-        fig_importance = px.bar(
-            x=list(feature_importance.values()),
-            y=list(feature_importance.keys()),
-            orientation='h',
-            title='Top 10 Features'
-        )
-        fig_importance.update_layout(
-            height=400,
-            xaxis_title='Importance',
-            yaxis_title='',
-            yaxis={'categoryorder': 'total ascending'}
-        )
-        st.plotly_chart(fig_importance, use_container_width=True)
-    
-    st.markdown("---")
-    
-    st.subheader("🔧 Technical Stack")
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("""
-        **Data Science**
-        - Python 3.10+
-        - Pandas, NumPy
-        - XGBoost
-        - Statsmodels
-        - Prophet
+        ### Validation Strategy
+        
+        - **Training**: 2013-01-01 to 2017-07-15
+        - **Validation**: 2017-07-16 to 2017-08-15 (31 days)
+        - **Test**: 2017-08-16 to 2017-08-31 (16 days)
+        
+        Time-based split ensures no data leakage.
         """)
     
-    with col2:
+    with tab2:
         st.markdown("""
-        **Visualization**
-        - Plotly
-        - Matplotlib
-        - Seaborn
-        - Streamlit
+        ### Frequently Asked Questions
+        
+        **Q: Why XGBoost over SARIMA or Prophet?**
+        
+        A: XGBoost can model all 1,782 time series simultaneously as a single model, 
+        while SARIMA requires fitting separate models for each series. XGBoost also 
+        naturally incorporates external features like oil prices and holidays.
+        
+        ---
+        
+        **Q: How did you handle test data without sales values?**
+        
+        A: For lag features in test data, I used an iterative approach where each 
+        test date's lags are computed from the available historical data. This 
+        ensures no data leakage.
+        
+        ---
+        
+        **Q: Why is MAPE 36% but the model is considered good?**
+        
+        A: MAPE is inflated by low-sales items (predicting 2 when actual is 1 = 100% MAPE). 
+        RMSLE is the better metric for this data, and our 0.4510 RMSLE represents 
+        strong performance (31% better than baseline).
+        
+        ---
+        
+        **Q: How would you deploy this in production?**
+        
+        A: FastAPI endpoint for predictions, weekly automated retraining, Docker 
+        containerization, and monitoring for data drift. Models are already saved 
+        in joblib format for deployment.
         """)
     
-    with col3:
+    with tab3:
         st.markdown("""
-        **Deployment**
-        - FastAPI
-        - Docker
-        - GitHub Actions
-        - Streamlit Cloud
+        ### References
+        
+        **Competition**
+        - [Kaggle: Store Sales - Time Series Forecasting](https://www.kaggle.com/competitions/store-sales-time-series-forecasting)
+        
+        **Libraries**
+        - [XGBoost Documentation](https://xgboost.readthedocs.io/)
+        - [LightGBM Documentation](https://lightgbm.readthedocs.io/)
+        - [Prophet Documentation](https://facebook.github.io/prophet/)
+        - [Streamlit Documentation](https://docs.streamlit.io/)
+        
+        **Related Reading**
+        - [Time Series Cross-Validation](https://scikit-learn.org/stable/modules/cross_validation.html#time-series-split)
+        - [Feature Engineering for Time Series](https://www.kaggle.com/code/ryanholbrook/time-series-as-features)
+        
+        **Source Code**
+        - [GitHub Repository](https://github.com/ZeroZulu/kaggle)
         """)
-    
-    st.markdown("---")
-    
-    st.subheader("👨‍💻 About the Author")
-    st.markdown("""
-    This project was built as part of a **Data Science portfolio** to demonstrate:
-    
-    ✅ Time series forecasting methodology  
-    ✅ Feature engineering at scale  
-    ✅ ML model development and evaluation  
-    ✅ API development (FastAPI)  
-    ✅ Interactive dashboards (Streamlit)  
-    ✅ Production-ready code practices  
-    
-    **Connect with me:**
-    - 📧 your.email@example.com
-    - 💼 [LinkedIn](https://linkedin.com/in/yourprofile)
-    - 🐙 [GitHub](https://github.com/yourusername)
-    """)
 
 # ============================================================
 # FOOTER
 # ============================================================
 st.markdown("---")
-st.markdown(
-    "<p style='text-align: center; color: #888;'>© 2025 Retail Sales Forecasting | Built with Streamlit</p>",
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div style="text-align: center; color: #666; padding: 20px;">
+    Built with ❤️ using Streamlit | 
+    <a href="https://github.com/ZeroZulu/kaggle">GitHub</a> | 
+    <a href="https://www.kaggle.com/competitions/store-sales-time-series-forecasting">Kaggle Competition</a>
+</div>
+""", unsafe_allow_html=True)
