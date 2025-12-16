@@ -770,7 +770,7 @@ elif page == "📚 Documentation":
         - [Feature Engineering for Time Series](https://www.kaggle.com/code/ryanholbrook/time-series-as-features)
         
         **Source Code**
-        - [GitHub Repository](https://github.com/ZeroZulu/kaggle)
+        - [GitHub Repository](https://github.com/ZeroZulu/kaggle/storesalesforecasting)
         """)
 
 # ============================================================
@@ -780,7 +780,7 @@ st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #666; padding: 20px;">
     Built with ❤️ using Streamlit | 
-    <a href="https://github.com/ZeroZulu/kaggle/storesalesforecasting">GitHub</a> | 
+    <a href="https://github.com/ZeroZulu">GitHub</a> | 
     <a href="https://www.kaggle.com/competitions/store-sales-time-series-forecasting">Kaggle Competition</a>
 </div>
 """, unsafe_allow_html=True)
