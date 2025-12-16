@@ -23,6 +23,18 @@ This is a **hierarchical forecasting problem** with:
 
 ---
 
+## 🚀 Live Demo
+
+**[→ Try the Live App](https://storesaleforecasting.streamlit.app)**
+
+Features in the demo:
+- 🔍 Look up any NYC restaurant's risk score
+- 🗺️ Interactive map of high-risk areas
+- 📊 Explore violation patterns by cuisine, borough, and time
+- 🧠 See model explanations (SHAP values) for predictions
+
+---
+
 ## 📈 Model Performance Comparison
 
 | Model | RMSLE | RMSE | MAE | MAPE |
