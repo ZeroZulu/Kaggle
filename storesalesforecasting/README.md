@@ -25,13 +25,19 @@ This is a **hierarchical forecasting problem** with:
 
 ## 🚀 Live Demo
 
-**[→ Try the Live App](https://storesaleforecasting.streamlit.app)**
+### Streamlit Dashboard
+**[→ Try the Interactive App](https://storesaleforecasting.streamlit.app)**
+...
 
-Features in the demo:
-- 🔍 Look up any NYC restaurant's risk score
-- 🗺️ Interactive map of high-risk areas
-- 📊 Explore violation patterns by cuisine, borough, and time
-- 🧠 See model explanations (SHAP values) for predictions
+### Tableau Dashboard
+**[→ View on Tableau Public](https://public.tableau.com/app/profile/YOUR_USERNAME/viz/StoreSalesForecasting)**
+
+Features:
+- 📈 **Sales Trends** - Daily, weekly, and monthly patterns
+- 🗺️ **Store Performance Map** - Geographic visualization by store
+- 📊 **Product Family Analysis** - Compare sales across 33 categories
+- 📅 **Seasonality Explorer** - Holiday and promotional impact
+- 🔍 **Drill-Down Filters** - Filter by store, family, date range
 
 ---
 
