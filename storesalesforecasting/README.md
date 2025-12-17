@@ -29,9 +29,6 @@ This is a **hierarchical forecasting problem** with:
 **[→ Try the Interactive App](https://storesaleforecasting.streamlit.app)**
 ...
 
-### Tableau Dashboard
-**[→ View on Tableau Public](https://public.tableau.com/app/profile/YOUR_USERNAME/viz/StoreSalesForecasting)**
-
 Features:
 - 📈 **Sales Trends** - Daily, weekly, and monthly patterns
 - 🗺️ **Store Performance Map** - Geographic visualization by store
