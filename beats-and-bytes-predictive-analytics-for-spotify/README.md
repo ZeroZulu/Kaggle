@@ -1,66 +1,67 @@
-# 🎧 Beats & Bytes: Predictive Analytics for Spotify
+# 🎵 Beats & Bytes: Predictive Analytics for Spotify
 
-**Type:** Data Science & Machine Learning Project  
-**Tools:** Python · Pandas · Scikit-learn · Matplotlib · Seaborn · Jupyter Notebook
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![Kaggle](https://img.shields.io/badge/Kaggle-Notebook-20BEFF.svg)
+![ML](https://img.shields.io/badge/Machine%20Learning-Regression-green.svg)
 
----
+Analyzing what audio features predict streaming success using statistical rigor and honest evaluation.
 
-## 📌 Overview
+## 🎯 Problem Statement
 
-This project explores Spotify's song-level audio features and applies predictive modeling to classify and understand what makes a track **popular**.
+Understanding what makes a song successful is the holy grail of the music industry. This project analyzes **950+ top-streamed Spotify tracks** to identify patterns in audio features and streaming performance.
 
-> 💡 **Goal:** Use Spotify audio features (e.g., danceability, energy, tempo) to predict song popularity and gain insight into feature importance.
+**Goals:**
+- Identify which audio features correlate with streaming success
+- Build predictive models and honestly evaluate their limitations
+- Provide evidence-based recommendations for music strategy
 
----
+## 🔍 Key Findings
 
-## 🔍 Key Objectives
+| Insight | Details |
+|---------|---------|
+| **Playlist Correlation** | r = 0.78 with streams — but likely reverse causation |
+| **Audio Predictive Power** | Only ~8% of variance explained (R² = 0.08) |
+| **Seasonal Effect** | Small impact (η² = 0.03) — timing < quality |
+| **Mood Clusters** | 4 distinct audio profiles identified |
 
-- Perform feature exploration on Spotify track data
-- Visualize distributions and relationships across audio features
-- Build predictive models to classify a song as *popular* or *not*
-- Evaluate model performance using classification metrics
-- Share actionable insights from feature importance and correlation
+## 🚀 Project Highlights
 
----
+- **Statistical Testing:** Kruskal-Wallis, Mann-Whitney U, Bonferroni correction
+- **Two-Model Comparison:** Separates correlation (all features) from prediction (audio-only)
+- **Interpretability:** SHAP analysis for feature importance
+- **Clustering:** K-Means + t-SNE for mood-based segmentation
 
-## 📊 Project Highlights
+## 📈 Results
 
-- 🎼 **EDA** on attributes like tempo, valence, loudness, and speechiness
-- 🔗 **Correlation Analysis** showing which features link to popularity
-- 🧠 **ML Modeling:** Logistic Regression, Decision Tree Classifier, and others
-- 📈 **Performance Metrics:** Accuracy, precision, recall, and ROC curve
-- 💡 **Feature Engineering** to simplify predictions and improve clarity
+**Best Audio-Only Model: Random Forest**
+- R² = 0.08 (5-fold CV)
+- Top features: Speechiness, Instrumentalness, Acousticness
 
----
+**Key Insight:** High R² models using playlist counts are misleading — playlists are an *effect* of success, not a cause.
 
-## 🧠 Skills Demonstrated
+## 📊 View the Analysis
 
-- Data cleaning & preparation
-- Exploratory data analysis
-- Feature selection and encoding
-- Predictive modeling with Scikit-learn
-- Data storytelling with visualizations
-- Business-oriented conclusions based on model findings
+🔗 **[View on Kaggle](https://www.kaggle.com/code/zerol0l/beats-and-bytes-predictive-analytics-for-spotify)**
 
----
+## 🛠 Technologies
 
-## 🧰 Tech Stack
+Python • Pandas • Scikit-learn • SHAP • Matplotlib • Seaborn • SciPy • Statsmodels
 
-| Tool             | Use Case                           |
-|------------------|------------------------------------|
-| **Python**        | Core programming                   |
-| **Pandas**        | Data manipulation                  |
-| **Seaborn/Matplotlib** | Data visualization             |
-| **Scikit-learn**  | Machine learning pipeline & evaluation |
-| **Jupyter Notebook** | Development & reporting         |
+## 💡 Business Recommendations
 
----
+1. **Playlist Strategy** — Diversify pitching across platforms; focus on editorial placements
+2. **Audio Guidelines** — Use danceability 54-75% as a soft benchmark, not a rule
+3. **Release Timing** — Don't delay great tracks for "perfect" timing
+4. **Mood Curation** — Leverage cluster analysis for playlist personalization
 
-## 🚀 Future Work
+## ⚠️ Limitations
 
-- Add support for multi-class prediction (e.g., genre, mood)
-- Build a Streamlit or Gradio app to interactively predict track popularity
-- Use Spotify API for real-time song analytics
-- Experiment with ensemble models and hyperparameter tuning
+- **Survivorship bias** — Dataset contains only top-streamed songs
+- **Correlation ≠ Causation** — Observational data cannot prove causal relationships
+- **Low predictability** — Audio features alone don't predict hits (and that's an honest finding)
 
----
+## 🔮 Future Work
+
+- Integrate Spotify API for real-time analysis
+- A/B test recommendations with playlist curators
+- Expand to genre-specific models
