@@ -1,31 +1,65 @@
-**📉 Telecom Customer Churn Prediction**
--------
-This project explores customer churn behavior in the telecom industry using machine learning. The goal is to identify patterns that contribute to customer churn and build a predictive model that can help telecom companies proactively reduce attrition.
+# 📊 Telecom Customer Churn Prediction
 
-**📊 Problem Statement**
--------------
-Customer churn is a critical issue for telecom companies, where acquiring new customers is significantly more expensive than retaining existing ones. This project aims to:
+![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
+![Tableau](https://img.shields.io/badge/Tableau-Dashboard-orange.svg)
+![ML](https://img.shields.io/badge/Machine%20Learning-Classification-green.svg)
 
-* Understand key drivers behind customer churn.
-* Build and evaluate machine learning models to predict churn.
-* Provide actionable insights for customer retention strategies.
+Predicting customer churn in the telecom industry using machine learning to enable proactive retention strategies.
 
-**🔍 Project Highlights**
------
-* **Data Preprocessing:** Cleaned and encoded the dataset for machine learning workflows.  
-* **Exploratory Data Analysis (EDA):** Uncovered insights about churn distribution, customer demographics, service usage, and tenure.  
-  🔗 **Interactive Dashboard:** [View on Tableau Public](https://public.tableau.com/views/TelecomChurnv2/ExecutiveOverview?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)  
-* **Modeling:**
-  * Trained and compared multiple classification models: Logistic Regression, Decision Tree, Random Forest, and XGBoost.
-  * Performed hyperparameter tuning and cross-validation for performance optimization.
-  * **Evaluation Metrics:** Accuracy, Precision, Recall, F1 Score, and ROC-AUC.
+## 🎯 Problem Statement
 
-**📈 Results**
---------
-The **XGBoost model** emerged as the top performer with the best trade-off between precision and recall, providing a solid foundation for churn prediction with measurable business impact.
+Customer churn is a critical issue for telecom companies — acquiring new customers costs **5-7x more** than retaining existing ones. This project analyzes **7,043 customers** to identify churn patterns and build predictive models.
 
-**📌 Future Work**
------
-* Integrate a real-time prediction API.
-* Improve feature engineering with domain-specific attributes.
-* Deploy the model using FastAPI or Flask.
+**Goals:**
+- Understand key drivers behind customer churn
+- Build and evaluate machine learning models to predict churn
+- Provide actionable insights for retention strategies
+
+## 🔍 Key Findings
+
+| Insight | Details |
+|---------|---------|
+| **Churn Rate** | 26.5% of customers churned |
+| **Highest Risk** | Month-to-month contracts (42% churn vs 3% for 2-year) |
+| **Critical Period** | First 12 months — highest churn risk |
+| **Service Impact** | Customers without add-ons churn 2x more |
+
+## 🚀 Project Highlights
+
+- **Data Preprocessing:** Cleaned data, engineered features, handled class imbalance
+- **EDA:** Analyzed churn across demographics, services, and tenure
+- **Modeling:** Compared Logistic Regression, Random Forest, XGBoost, and more
+- **Evaluation:** Accuracy, Precision, Recall, F1-Score, ROC-AUC
+
+## 📈 Results
+
+**Best Model: XGBoost**
+- AUC-ROC: 0.84
+- Best precision-recall trade-off for business application
+
+**Top Predictors:** Tenure, Monthly Charges, Contract Type, Internet Service, Payment Method
+
+## 📊 Interactive Dashboard
+
+🔗 **[View on Tableau Public](https://public.tableau.com/views/TelecomChurnv2/ExecutiveOverview?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)**
+
+## 🛠 Technologies
+
+Python • Pandas • Scikit-learn • XGBoost • Matplotlib • Seaborn • Tableau
+
+## 💡 Business Recommendations
+
+1. **Early Intervention** — Target customers in first 6 months
+2. **Contract Conversion** — Incentivize annual plan upgrades
+3. **Service Bundles** — Promote add-on services to increase stickiness
+4. **Proactive Outreach** — Use model to identify and retain at-risk customers
+
+## 🔮 Future Work
+
+- Deploy real-time prediction API with FastAPI
+- Build Streamlit dashboard for stakeholders
+- Implement automated model retraining
+
+---
+
+⭐ If this project helped you, please give it a star!
