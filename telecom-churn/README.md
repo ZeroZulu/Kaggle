@@ -14,7 +14,7 @@ Customer churn is a critical issue for telecom companies, where acquiring new cu
 -----
 * **Data Preprocessing:** Cleaned and encoded the dataset for machine learning workflows.  
 * **Exploratory Data Analysis (EDA):** Uncovered insights about churn distribution, customer demographics, service usage, and tenure.  
-  🔗 **Interactive Dashboard:** [View on Tableau Public](https://public.tableau.com/shared/4DF7R79TS?:display_count=n&:origin=viz_share_link)  
+  🔗 **Interactive Dashboard:** [View on Tableau Public](https://public.tableau.com/views/TelecomChurnv2/ExecutiveOverview?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)  
 * **Modeling:**
   * Trained and compared multiple classification models: Logistic Regression, Decision Tree, Random Forest, and XGBoost.
   * Performed hyperparameter tuning and cross-validation for performance optimization.
