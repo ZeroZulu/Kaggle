@@ -42,6 +42,7 @@ Understanding what makes a song successful is the holy grail of the music indust
 ## 📊 View the Analysis
 
 🔗 **[View on Kaggle](https://www.kaggle.com/code/zerol0l/beats-and-bytes-predictive-analytics-for-spotify)**
+🔗 **Interactive Dashboard:** [View on Tableau Public](https://public.tableau.com/views/BeatsBytesSpotifyStreamingAnalytics/ExecutiveOverview?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 
 ## 🛠 Technologies
 
