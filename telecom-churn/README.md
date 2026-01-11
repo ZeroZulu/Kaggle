@@ -39,7 +39,9 @@ Customer churn is a critical issue for telecom companies — acquiring new custo
 
 **Top Predictors:** Tenure, Monthly Charges, Contract Type, Internet Service, Payment Method
 
-## 📊 Interactive Dashboard
+## 📊 View the Analysis
+
+🔗 **[View on Kaggle](https://www.kaggle.com/code/zerol0l/telecom-churn)**
 
 🔗 **[View on Tableau Public](https://public.tableau.com/views/TelecomChurnv2/ExecutiveOverview?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)**
 
