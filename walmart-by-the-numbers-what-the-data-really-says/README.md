@@ -34,6 +34,8 @@ A range of visualizations were created to support the analysis:
 
 🔗 **Interactive Dashboard:** [View on Tableau Public](https://public.tableau.com/views/Walmart_Sales_Intelligence/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 
+🔗 **Kaggle** [View on Kaggle Public](https://www.kaggle.com/code/zerol0l/walmart-by-the-numbers-what-the-data-really-says/edit/run/252486589#%F0%9F%9B%92-Walmart-Sales-Intelligence)
+
 ---
 
 ## 🧠 Skills Demonstrated
