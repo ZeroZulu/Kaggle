@@ -1,33 +1,42 @@
-# 🏅 Olympic Sports, Medals, and Discipline Analysis
+# 🏅 Olympic Games Data Analysis
 
-This repository contains an exploratory data analysis (EDA) of Olympic Games data, focusing on medal distribution across countries, sports, and years. The analysis uses Python with libraries like Pandas, Seaborn, and Matplotlib to visualize key trends and patterns.
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Tableau](https://img.shields.io/badge/Tableau-E97627?style=flat-square&logo=tableau&logoColor=white)](https://public.tableau.com/)
+[![Kaggle](https://img.shields.io/badge/Kaggle-20BEFF?style=flat-square&logo=kaggle&logoColor=white)](https://kaggle.com)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Data](https://img.shields.io/badge/Data-1896--2016-gold?style=flat-square)]()
 
-## 📁 Dataset
+120 years of Olympic history analyzed with Python and visualized in Tableau.
 
-The dataset is sourced from Kaggle: [Olympic Sports and Medals](https://www.kaggle.com/datasets/satishgunjal/olympic-sports-and-medals) and includes:
-- Medal records from various Olympic games
-- Country-wise and sport-wise performance
-- Event disciplines and athlete participation
+| Athletes | Medals | Countries | Sports |
+|:--------:|:------:|:---------:|:------:|
+| 271,116 | 39,783 | 230 | 66 |
 
-## 📊 Key Analyses
+## Key Findings
 
-- Medal distribution by country and year
-- Top performing countries by medal type (Gold, Silver, Bronze)
-- Most competitive sports and disciplines
-- Temporal trends in medal counts
-- Athlete participation trends
+- **USA** leads with 5,637 medals
+- **Athletics & Swimming** = 25% of all medals
+- Participation: 176 → 11,000+ athletes
+- Female participation: 0% → 45%
 
-## 📌 Visualizations
+## Dashboards
 
-The notebook includes several visualizations to enhance understanding:
-- Bar plots for medal counts by country
-- Count plots for top-performing disciplines
-- Line plots to show medal trends over time
-- (Future work) Heatmaps and interactive plots for deeper insights
+- **Country Analysis** - KPIs, medal trends, top athletes
+- **Sport Analysis** - Dominance heatmap, comparisons  
+- **Olympic Timeline** - Year slider, world map
 
-## 🧰 Tech Stack
+🔗 [View on Tableau Public](https://public.tableau.com/views/OlympicGamesDeepDive120YearsofAthleticExcellence/ExecutiveOverview?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 
-- **Python 3.9+**
-- **Pandas** for data manipulation
-- **Matplotlib** and **Seaborn** for data visualization
-- **Jupyter Notebook** for interactive analysis
+🔗 [View on Kaggle](https://www.kaggle.com/code/zerol0l/olympic-sports-medals-and-discipline)
+
+## Tech Stack
+
+`Python` `Pandas` `Matplotlib` `Seaborn` `Tableau`
+
+## Data Source
+
+[Kaggle: 120 Years of Olympic History](https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results)
+
+---
+
+**Shril Patel** • [GitHub](https://github.com/Zerol0Labz) • [LinkedIn](https://linkedin.com/in/shrilpatel)
