@@ -7,7 +7,6 @@
 
 A deep-dive analysis of the Cleveland Heart Disease dataset with ML prediction models and an interactive risk calculator.
 
-![Key Insights](figures/12_key_insights.png)
 
 ## 🚨 Key Discovery
 
