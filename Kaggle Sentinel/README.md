@@ -4,8 +4,8 @@
 
 ### Bot Account Detection Through Behavioral Forensics
 
-[![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-06b6d4?style=for-the-badge&logo=streamlit&logoColor=white)](https://YOUR_APP.streamlit.app)
-[![Kaggle](https://img.shields.io/badge/Kaggle-Notebook-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/YOUR_USERNAME)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-06b6d4?style=for-the-badge&logo=streamlit&logoColor=white)](https://kaggle-bn59nk2nujbu7agu6sadrw.streamlit.app)
+[![Kaggle](https://img.shields.io/badge/Kaggle-Notebook-20BEFF?style=for-the-badge&logo=kaggle&logoColor=white)](https://www.kaggle.com/code/zerol0l/kaggle-sentinel)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](#)
 [![License](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](#license)
 
@@ -47,60 +47,6 @@ Most bot detection projects stop at "train XGBoost, get 99% accuracy." Sentinel 
 └─────────────────────────────────────────────────────┘
 ```
 
----
-
-## 🚀 Quick Start
-
-### 1. Clone & Install
-
-```bash
-git clone https://github.com/YOUR_USERNAME/kaggle-sentinel.git
-cd kaggle-sentinel
-pip install -r requirements.txt
-```
-
-### 2. Get the Data
-
-Download `kaggle_bot_accounts.csv` from [Kaggle](https://www.kaggle.com/datasets/bot-account-detection) and place it in the `data/` directory.
-
-### 3. Run the Dashboard
-
-```bash
-streamlit run app.py
-```
-
-The app opens at `http://localhost:8501`. Upload the CSV via the sidebar or point to the `data/` path.
-
-### 4. Run the Notebook
-
-```bash
-jupyter notebook notebooks/kaggle_sentinel_notebook.ipynb
-```
-
----
-
-## 🏗️ Project Structure
-
-```
-kaggle-sentinel/
-├── app.py                          # Streamlit dashboard
-├── requirements.txt
-├── .streamlit/
-│   └── config.toml                 # Dark theme config
-├── src/
-│   ├── __init__.py
-│   └── feature_engineering.py      # Reusable feature pipeline
-├── notebooks/
-│   └── kaggle_sentinel_notebook.ipynb  # Full analysis (45 cells)
-├── data/
-│   └── .gitkeep                    # Place CSV here
-├── assets/
-│   └── dashboard_preview.png       # Screenshot for README
-└── README.md
-```
-
----
-
 ## 📐 Methodology
 
 ### Feature Engineering (Behavioral DNA)
@@ -141,7 +87,7 @@ The Streamlit dashboard provides five interactive panels:
 ## 🌐 Deploy to Streamlit Cloud
 
 1. Push this repo to GitHub
-2. Go to [share.streamlit.io](https://share.streamlit.io)
+2. Go to [share.streamlit.io]([https://share.streamlit.io](https://kaggle-bn59nk2nujbu7agu6sadrw.streamlit.app))
 3. Connect your repo → set main file to `app.py`
 4. **Note:** The app requires users to upload their own CSV (the dataset is not bundled due to Kaggle terms)
 
