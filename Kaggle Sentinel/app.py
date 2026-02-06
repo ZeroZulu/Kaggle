@@ -296,7 +296,7 @@ with tab4:
           "XGBoost":{"Accuracy":1.0,"F1":1.0,"ROC-AUC":1.0,"Precision":1.0,"Recall":1.0},
           "LightGBM":{"Accuracy":1.0,"F1":1.0,"ROC-AUC":1.0,"Precision":1.0,"Recall":1.0},
           "Stacking Ensemble":{"Accuracy":1.0,"F1":1.0,"ROC-AUC":1.0,"Precision":1.0,"Recall":1.0}}
-    st.dataframe(pd.DataFrame(mr).T.rename_axis("Model").style.format("{:.4f}").background_gradient(cmap="YlGn",axis=None), use_container_width=True)
+    st.dataframe(pd.DataFrame(mr).T.rename_axis("Model").style.format("{:.4f}"), use_container_width=True)
     fig_m = go.Figure()
     for met, clr in zip(["Accuracy","F1","Precision","Recall"],[COLORS["cyan"],COLORS["amber"],COLORS["green"],COLORS["purple"]]):
         fig_m.add_trace(go.Bar(name=met, x=list(mr.keys()), y=[mr[m][met] for m in mr], marker_color=clr, opacity=0.8))
