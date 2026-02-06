@@ -13,7 +13,7 @@
 
 ---
 
-<img src="assets/dashboard_preview.png" alt="Sentinel Dashboard Preview" width="90%">
+<img src="kaggle Sentinel.png" alt="Sentinel Dashboard Preview" width="90%">
 
 </div>
 
