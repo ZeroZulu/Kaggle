@@ -7,3 +7,4 @@ font = "monospace"
 
 [server]
 headless = true
+maxUploadSize = 1024
