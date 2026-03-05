@@ -20,7 +20,6 @@ A comprehensive machine learning project for detecting fraudulent credit card tr
 - [Methods Implemented](#-methods-implemented)
 - [Installation](#-installation)
 - [Usage](#-usage)
-- [Project Structure](#-project-structure)
 - [Key Findings](#-key-findings)
 - [Visualizations](#-visualizations)
 - [Future Improvements](#-future-improvements)
@@ -233,38 +232,6 @@ model.fit(X_train_res, y_train_res)
 y_pred = model.predict(X_test)
 ```
 
----
-
-## 📁 Project Structure
-
-```
-credit-card-fraud-detection/
-│
-├── 📓 credit-card-fraud-detection.ipynb   # Main Kaggle notebook
-├── 📄 README.md                            # This file
-├── 📄 requirements.txt                     # Python dependencies
-├── 📄 LICENSE                              # MIT License
-│
-├── 📂 data/                                # Dataset (not included)
-│   └── creditcard.csv
-│
-├── 📂 models/                              # Saved models (optional)
-│   ├── xgboost_model.pkl
-│   ├── lightgbm_model.pkl
-│   └── autoencoder.h5
-│
-├── 📂 figures/                             # Generated visualizations
-│   ├── class_distribution.png
-│   ├── feature_importance.png
-│   ├── roc_curves.png
-│   ├── confusion_matrices.png
-│   └── model_comparison.png
-│
-└── 📂 src/                                 # Source code (optional)
-    ├── preprocessing.py
-    ├── models.py
-    └── evaluation.py
-```
 
 ---
 
@@ -300,33 +267,6 @@ The most discriminative features for fraud detection (via KS-test):
 | **Detect Novel Patterns** | Autoencoder | Unsupervised, adapts to new fraud |
 | **Production Robustness** | Stacking Ensemble | Combines multiple model strengths |
 
-### 4. Deployment Recommendations
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                 PRODUCTION DEPLOYMENT                        │
-├─────────────────────────────────────────────────────────────┤
-│                                                             │
-│  PRIMARY SYSTEM: SMOTE + XGBoost                           │
-│  ├── Real-time transaction scoring                          │
-│  ├── Threshold: 0.5 (adjust based on business needs)       │
-│  └── Latency: <10ms per prediction                         │
-│                                                             │
-│  SECONDARY LAYER: Autoencoder                               │
-│  ├── Detect novel/unseen fraud patterns                    │
-│  ├── Run in batch mode (daily/hourly)                      │
-│  └── Alert on high reconstruction error                    │
-│                                                             │
-│  MONITORING:                                                │
-│  ├── Precision: Target > 80%                               │
-│  ├── Recall: Target > 85%                                  │
-│  ├── FPR: Target < 0.1%                                    │
-│  └── Model drift detection                                  │
-│                                                             │
-│  RETRAINING: Monthly with new fraud patterns               │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
 
 ---
 
@@ -408,14 +348,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## ⭐ Star History
-
-If you found this project helpful, please consider giving it a star!
-
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/credit-card-fraud-detection&type=Date)](https://star-history.com/#yourusername/credit-card-fraud-detection&Date)
-
----
-
-<p align="center">
-  <b>If you found this project useful, please ⭐ star the repository!</b>
-</p>
